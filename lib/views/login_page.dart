@@ -1,6 +1,6 @@
 import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
-import 'package:excp_training/screens/regester_page.dart';
+import 'package:excp_training/views/regester_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
