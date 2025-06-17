@@ -12,12 +12,31 @@ class CustomHomeBody extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 30,
+            height: 50,
           ),
           CustomAppbar(),
-          NotesItem(),
+          Expanded(child: ListViewnotes()),
         ],
       ),
+    );
+  }
+}
+
+class ListViewnotes extends StatelessWidget {
+  const ListViewnotes({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: ListView.builder(
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: NotesItem(),
+            );
+          }),
     );
   }
 }

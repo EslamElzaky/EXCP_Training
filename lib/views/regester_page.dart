@@ -39,6 +39,7 @@ class RegesterPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             CostumFormTextField(
+              
               hintText: 'password',
               obscureText: true,
             ),
