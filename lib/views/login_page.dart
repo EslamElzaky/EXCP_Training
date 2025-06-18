@@ -1,5 +1,7 @@
+import 'package:excp_training/constant.dart';
 import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
+import 'package:excp_training/views/home_view.dart';
 import 'package:excp_training/views/regester_page.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff2B475E),
+      backgroundColor: kPrimarycolor,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -31,30 +33,31 @@ class LoginPage extends StatelessWidget {
                 height: 20,
               ),
               CustomButton(
+                size: double.infinity,
                 text: 'Login',
                 onTap: () {
-                  // Handle login action
+                  Navigator.pushNamed(context, 'BottomNavigation');
+                  // naHandle login action
                 },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Don\'t have an account?',
-                      style: TextStyle(color: Colors.white)),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegesterPage(),
-                          ));
-                    },
-                    child: Text(
-                      ' Register',
-                      style: TextStyle(color: Color(0xffC7EDE6)),
-                    ),
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Don\'t have an account?',
+                        style: TextStyle(color: Colors.white)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, RegesterPage.id);
+                      },
+                      child: Text(
+                        ' Register',
+                        style: TextStyle(color: Color(0xffC7EDE6)),
+                      ),
+                    )
+                  ],
+                ),
               )
             ],
           ),
