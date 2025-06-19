@@ -1,6 +1,4 @@
 import 'package:excp_training/constant.dart';
-import 'package:excp_training/helper/bottom_navigation.dart';
-import 'package:excp_training/helper/custom_appBar.dart';
 import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_home_body.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
@@ -12,7 +10,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       backgroundColor: kPrimarycolor,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -31,15 +28,13 @@ class HomeView extends StatelessWidget {
         child: Icon(Icons.add),
       ),
       body: CustomHomeBody(),
-      
     );
   }
-  
 }
 
 class ShowNotesButton extends StatelessWidget {
-  const ShowNotesButton({super.key});
-
+  ShowNotesButton({super.key});
+  TextEditingController dateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,10 +62,10 @@ class ShowNotesButton extends StatelessWidget {
             height: 16,
           ),
           CostumFormTextField(
-            labelText: 'Date',
-            hintText: 'Enter date',
-            keyboardType: TextInputType.datetime,
-            obscureText: false,
+            labelText: 'Select Date',
+            hintText: 'Tap to choose date',
+            controller: dateController,
+            isDate: true,
           ),
           SizedBox(
             height: 50,
