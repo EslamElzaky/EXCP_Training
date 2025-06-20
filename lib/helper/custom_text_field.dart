@@ -29,14 +29,14 @@
 //       },
 //       onChanged: onChanged,
 //       decoration: InputDecoration(
-        
+
 //           labelText: labelText,
 //           hintText: hintText,
 //           hintStyle: TextStyle(
 //             color: Colors.white,
 //           ),
 //           enabledBorder: OutlineInputBorder(
-            
+
 //               borderSide: BorderSide(color: Colors.white),
 //               borderRadius: BorderRadius.circular(16)),
 //           border:
@@ -63,26 +63,55 @@ class CostumFormTextField extends StatelessWidget {
     this.isDate = false,
   });
 
-  final String? hintText;
-  final String? labelText;
-  final int maxLines;
-  final TextInputType? keyboardType;
-  final bool obscureText;
-  final Function(String)? onChanged;
-  final TextEditingController? controller;
-  final bool isDate;
+  String? hintText;
+  String? labelText;
+  int maxLines;
+  TextInputType? keyboardType;
+  bool obscureText;
+  Function(String)? onChanged;
+  TextEditingController? controller;
+  bool isDate;
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+  Future<void> _selectDateTime(BuildContext context) async {
+    // 1. اختار التاريخ
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(), 
-      firstDate: DateTime(1900), 
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
-    if (picked != null && controller != null) {
-      controller!.text = "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-      if (onChanged != null) {
-        onChanged!(controller!.text);
+
+    if (pickedDate != null) {
+      // 2. بعد اختيار التاريخ، نطلب الوقت
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null) {
+        // 3. نجمع التاريخ والوقت
+        final DateTime fullDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        // 4. نحولها لنص بصيغة مناسبة
+        final formatted =
+            "${fullDateTime.year}-${fullDateTime.month.toString().padLeft(2, '0')}-${fullDateTime.day.toString().padLeft(2, '0')} "
+            "${pickedTime.format(context)}";
+
+        // 5. نعرضها في الحقل
+        if (controller != null) {
+          controller!.text = formatted;
+        }
+
+        // 6. نمررها عبر onChanged لو موجود
+        if (onChanged != null) {
+          onChanged!(formatted);
+        }
       }
     }
   }
@@ -95,8 +124,8 @@ class CostumFormTextField extends StatelessWidget {
       maxLines: maxLines,
       cursorColor: Colors.white,
       obscureText: obscureText,
-      readOnly: isDate, // نمنع المستخدم من الكتابة اليدوية إذا كان حقل تاريخ
-      onTap: isDate ? () => _selectDate(context) : null,
+      readOnly: isDate,
+      onTap: isDate ? () => _selectDateTime(context) : null,
       validator: (data) {
         if (data == null || data.isEmpty) {
           return 'Field is required';
@@ -121,4 +150,3 @@ class CostumFormTextField extends StatelessWidget {
     );
   }
 }
-

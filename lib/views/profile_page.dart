@@ -3,6 +3,8 @@ import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_icons.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
 import 'package:excp_training/views/home_view.dart';
+import 'package:excp_training/views/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -24,11 +26,13 @@ class ProfilePage extends StatelessWidget {
                 )),
             Spacer(),
             CustomIcons(
-              icon: Icon(Icons.logout),
-              onTap: () {
-                Navigator.pushNamed(context, HomeView.id);
-              },
-            )
+                icon: Icon(Icons.logout),
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  if (!context.mounted) return;
+                  // بعد تسجيل الخروج، الرجوع لصفحة تسجيل الدخول
+                  Navigator.pushReplacementNamed(context, LoginPage.id);
+                })
           ],
         ),
       ),

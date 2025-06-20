@@ -1,4 +1,5 @@
 import 'package:excp_training/constant.dart';
+import 'package:excp_training/helper/Custom_dropdown_field.dart';
 import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_home_body.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
@@ -35,12 +36,24 @@ class HomeView extends StatelessWidget {
 class ShowNotesButton extends StatelessWidget {
   ShowNotesButton({super.key});
   TextEditingController dateController = TextEditingController();
+  String? selectedType;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView(
         children: [
+          SizedBox(
+            height: 24,
+          ),
+          CustomDropdownField(
+            items: ['study', 'sports', 'Games', 'work', 'others'],
+            labelText: 'Type Task',
+            value: selectedType,
+            onChanged: (val) {
+              selectedType = val;
+            },
+          ),
           SizedBox(
             height: 24,
           ),
@@ -72,7 +85,7 @@ class ShowNotesButton extends StatelessWidget {
           ),
           CustomButton(
             size: double.infinity,
-            text: 'Add Notes',
+            text: 'Add Taske',
           )
         ],
       ),
