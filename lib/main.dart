@@ -1,12 +1,18 @@
+import 'package:excp_training/firebase_options.dart';
 import 'package:excp_training/helper/bottom_navigation.dart';
 import 'package:excp_training/views/home_view.dart';
 import 'package:excp_training/views/login_page.dart';
 import 'package:excp_training/views/profile_page.dart';
 import 'package:excp_training/views/regester_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +31,7 @@ class MyApp extends StatelessWidget {
         'regesterpage': (context) => RegesterPage(),
         ProfilePage.id: (context) => ProfilePage(),
       },
-      initialRoute: 'login_page',
+      initialRoute: 'regesterpage',
     );
   }
 }
