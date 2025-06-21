@@ -2,6 +2,8 @@ import 'package:excp_training/constant.dart';
 import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_icons.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
+import 'package:excp_training/views/change_password.dart';
+import 'package:excp_training/views/eidt_profile_page.dart';
 import 'package:excp_training/views/home_view.dart';
 import 'package:excp_training/views/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,6 +85,7 @@ class ProfilePage extends StatelessWidget {
                     color: const Color.fromARGB(255, 195, 204, 213),
                     text: 'Eidt Data',
                     onTap: () {
+                      Navigator.pushNamed(context, EidtProfilePage.id);
                       // Handle login action
                     },
                   ),
@@ -91,6 +94,7 @@ class ProfilePage extends StatelessWidget {
                     size: 150,
                     text: 'Password',
                     onTap: () {
+                      Navigator.pushNamed(context, ChangePasswordPage.id);
                       // Handle login action
                     },
                   ),
