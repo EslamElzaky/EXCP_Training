@@ -1,5 +1,7 @@
 import 'package:excp_training/helper/custom_icons.dart';
+import 'package:excp_training/views/login_page.dart';
 import 'package:excp_training/views/profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget {
@@ -9,6 +11,17 @@ class CustomAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        Builder(
+          builder: (context) => IconButton(
+            icon: Icon(
+              Icons.sort,
+              size: 30,
+            ),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
         Text(
           'Notes',
           style: TextStyle(
