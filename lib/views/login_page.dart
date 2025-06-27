@@ -95,23 +95,22 @@ class _LoginPageState extends State<LoginPage> {
                         if (!context.mounted) return;
 
                         showSnackBar(context, '✅ Login successful');
-                        Navigator.pushNamed(context, HomeView.id,
-                            arguments: email);
+                        Navigator.pushNamed(context, 'BottomNavigation');
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           showSnackBar(
-                              context, '❌ No user found with this email.');
+                              context, ' No user found with this email.');
                         } else if (e.code == 'wrong-password') {
-                          showSnackBar(context, '🔐 Incorrect password.');
+                          showSnackBar(context, ' Incorrect password.');
                         } else if (e.code == 'invalid-email') {
                           showSnackBar(
-                              context, '📧 The email address is invalid.');
+                              context, 'The email address is invalid.');
                         } else if (e.code == 'too-many-requests') {
                           showSnackBar(context,
                               '🚫 Too many failed attempts. Try again later.');
                         } else {
                           showSnackBar(
-                              context, '⚠️ An error occurred: ${e.message}');
+                              context, ' An error occurred: ${e.message}');
                         }
                       }
 
