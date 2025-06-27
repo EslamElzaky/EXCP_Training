@@ -1,3 +1,4 @@
+import 'package:excp_training/views/Categories_page.dart';
 import 'package:excp_training/views/home_view.dart';
 import 'package:excp_training/views/profile_page.dart';
 import 'package:excp_training/views/regester_page.dart';
@@ -16,8 +17,8 @@ class BottomNavigationState extends State<BottomNavigation> {
 
   final List<Widget> screens = [
     HomeView(),
+    CategoriesPage(),
     ProfilePage(),
-    RegesterPage(),
   ];
 
   @override
@@ -38,12 +39,12 @@ class BottomNavigationState extends State<BottomNavigation> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.category_sharp),
+            label: 'categories',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Notes',
+            icon: Icon(Icons.person),
+            label: 'profile',
           ),
         ],
       ),
