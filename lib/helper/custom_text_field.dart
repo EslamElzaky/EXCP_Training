@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class CostumFormTextField extends StatelessWidget {
-  CostumFormTextField({
+ const CostumFormTextField({
     super.key,
     this.prefixText,
     this.readOnly = false,
@@ -16,16 +16,16 @@ class CostumFormTextField extends StatelessWidget {
     this.isDate = false,
   });
 
-  String? hintText;
-  String? labelText;
-  String? prefixText;
-  int maxLines;
-  TextInputType? keyboardType;
-  bool obscureText;
-  Function(String)? onChanged;
-  TextEditingController? controller;
-  bool isDate;
-  bool readOnly;
+ final String? hintText;
+  final String? labelText;
+  final String? prefixText;
+  final int maxLines;
+  final TextInputType? keyboardType;
+ final bool obscureText;
+ final Function(String)? onChanged;
+ final TextEditingController? controller;
+  final bool isDate;
+  final bool readOnly;
 
   Future<void> _selectDateTime(BuildContext context) async {
     // 1. اختار التاريخ
