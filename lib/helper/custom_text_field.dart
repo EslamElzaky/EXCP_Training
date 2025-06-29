@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 class CostumFormTextField extends StatelessWidget {
- const CostumFormTextField({
+  const CostumFormTextField({
     super.key,
     this.prefixText,
     this.readOnly = false,
@@ -16,14 +15,14 @@ class CostumFormTextField extends StatelessWidget {
     this.isDate = false,
   });
 
- final String? hintText;
+  final String? hintText;
   final String? labelText;
   final String? prefixText;
   final int maxLines;
   final TextInputType? keyboardType;
- final bool obscureText;
- final Function(String)? onChanged;
- final TextEditingController? controller;
+  final bool obscureText;
+  final Function(String)? onChanged;
+  final TextEditingController? controller;
   final bool isDate;
   final bool readOnly;
 
@@ -74,7 +73,6 @@ class CostumFormTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
       controller: controller,
       keyboardType: keyboardType,
       maxLines: maxLines,
