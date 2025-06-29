@@ -1,7 +1,6 @@
 import 'package:excp_training/views/Categories_page.dart';
 import 'package:excp_training/views/home_view.dart';
 import 'package:excp_training/views/profile_page.dart';
-import 'package:excp_training/views/regester_page.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigation extends StatefulWidget {

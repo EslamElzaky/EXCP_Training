@@ -147,7 +147,7 @@ class _RegesterPageState extends State<RegesterPage> {
                       await regeistermethod();
                       if (!context.mounted) return;
 
-                      Navigator.pushNamed(context, HomeView.id);
+                      Navigator.pushNamed(context, 'BottomNavigation');
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
                         showSnackBar(
