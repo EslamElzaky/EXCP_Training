@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CostumFormTextField extends StatelessWidget {
-  const CostumFormTextField({
+class CostumFormTextField extends StatefulWidget {
+  CostumFormTextField({
     super.key,
     this.prefixText,
     this.readOnly = false,
@@ -13,19 +13,25 @@ class CostumFormTextField extends StatelessWidget {
     this.obscureText = false,
     this.controller,
     this.isDate = false,
+    this.usePassword = false,
   });
-
+  final bool usePassword;
   final String? hintText;
   final String? labelText;
   final String? prefixText;
   final int maxLines;
   final TextInputType? keyboardType;
-  final bool obscureText;
+  bool obscureText;
   final Function(String)? onChanged;
   final TextEditingController? controller;
   final bool isDate;
   final bool readOnly;
 
+  @override
+  State<CostumFormTextField> createState() => _CostumFormTextFieldState();
+}
+
+class _CostumFormTextFieldState extends State<CostumFormTextField> {
   Future<void> _selectDateTime(BuildContext context) async {
     // 1. اختار التاريخ
     final DateTime? pickedDate = await showDatePicker(
@@ -58,13 +64,13 @@ class CostumFormTextField extends StatelessWidget {
             "${pickedTime.format(context)}";
 
         // 5. نعرضها في الحقل
-        if (controller != null) {
-          controller!.text = formatted;
+        if (widget.controller != null) {
+          widget.controller!.text = formatted;
         }
 
         // 6. نمررها عبر onChanged لو موجود
-        if (onChanged != null) {
-          onChanged!(formatted);
+        if (widget.onChanged != null) {
+          widget.onChanged!(formatted);
         }
       }
     }
@@ -73,24 +79,38 @@ class CostumFormTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      maxLines: maxLines,
+      controller: widget.controller,
+      keyboardType: widget.keyboardType,
+      maxLines: widget.maxLines,
       cursorColor: Colors.white,
-      obscureText: obscureText,
-      readOnly: readOnly,
-      onTap: isDate ? () => _selectDateTime(context) : null,
+      obscureText: widget.obscureText,
+      readOnly: widget.readOnly,
+      onTap: widget.isDate ? () => _selectDateTime(context) : null,
       validator: (data) {
         if (data == null || data.isEmpty) {
           return 'Field is required';
         }
         return null;
       },
-      onChanged: onChanged,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
-        prefixText: prefixText,
-        labelText: labelText,
-        hintText: hintText,
+        suffixIcon: widget.usePassword
+            ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    widget.obscureText = !widget.obscureText;
+                  });
+                },
+                child: Icon(
+                    widget.obscureText
+                        ? Icons.visibility_off
+                        : Icons.remove_red_eye,
+                    color: Colors.white),
+              )
+            : SizedBox.shrink(),
+        prefixText: widget.prefixText,
+        labelText: widget.labelText,
+        hintText: widget.hintText,
         hintStyle: TextStyle(color: Colors.white),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),

@@ -11,8 +11,9 @@ class NotesItem extends StatelessWidget {
         // Handle note item tap
       },
       child: Container(
+        
         padding: EdgeInsets.only(top: 24, bottom: 24, left: 16),
-        decoration: BoxDecoration(
+         decoration: BoxDecoration( 
           color: Color(0xffFFCC80),
           borderRadius: BorderRadius.circular(16),
         ),
