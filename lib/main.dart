@@ -1,3 +1,4 @@
+import 'package:excp_training/constant.dart';
 import 'package:excp_training/firebase_options.dart';
 import 'package:excp_training/helper/bottom_navigation.dart';
 import 'package:excp_training/views/Categories_page.dart';
@@ -10,12 +11,14 @@ import 'package:excp_training/views/change_password.dart';
 import 'package:excp_training/views/task_eidt_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Hive.initFlutter();
+  await Hive.openBox(kTaskesBox);
+
   runApp(MyApp());
 }
 
