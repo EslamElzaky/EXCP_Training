@@ -85,6 +85,7 @@ class _EidtProfilePageState extends State<EidtProfilePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 50),
                       CostumFormTextField(
                         hintText: 'First Name',
                         controller: firstNameController,

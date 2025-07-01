@@ -53,7 +53,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 },
                 labelText: 'First name',
                 hintText: 'first name',
-                obscureText: false,
+              
               ),
               SizedBox(height: 20),
               CostumFormTextField(
@@ -62,7 +62,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 },
                 labelText: 'Mid Name',
                 hintText: 'Mid name',
-                obscureText: false,
+                
               ),
               SizedBox(height: 20),
               CostumFormTextField(
@@ -71,7 +71,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 },
                 labelText: 'Last Name',
                 hintText: 'last name',
-                obscureText: false,
+                
               ),
               SizedBox(height: 20),
               CostumFormTextField(
@@ -80,7 +80,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 },
                 labelText: 'City',
                 hintText: 'city',
-                obscureText: false,
+                
               ),
               SizedBox(height: 20),
               CostumFormTextField(
@@ -90,7 +90,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 },
                 labelText: 'Phone',
                 hintText: 'phone',
-                obscureText: false,
+                
               ),
               SizedBox(height: 20),
               CostumFormTextField(
@@ -99,7 +99,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 },
                 labelText: 'Email',
                 hintText: 'email',
-                obscureText: false,
+                
               ),
               SizedBox(height: 20),
               CostumFormTextField(
@@ -109,6 +109,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 labelText: 'password',
                 hintText: 'password',
                 obscureText: true,
+                usePassword: true,
               ),
               SizedBox(height: 20),
               CostumFormTextField(
@@ -118,6 +119,7 @@ class _RegesterPageState extends State<RegesterPage> {
                 labelText: 'confirm password',
                 hintText: 'confirm password',
                 obscureText: true,
+                usePassword: true,
               ),
               SizedBox(height: 20),
               SizedBox(

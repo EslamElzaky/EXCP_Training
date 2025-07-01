@@ -8,6 +8,8 @@ import 'profile_page.dart'; // تأكد إنك مستورد الصفحة دي
 class ChangePasswordPage extends StatefulWidget {
   static String id = 'changePassword';
 
+  const ChangePasswordPage({super.key});
+
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
@@ -81,6 +83,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               child: Column(
                 children: [
                   CostumFormTextField(
+                    usePassword: true,
                     obscureText: true,
                     labelText: 'Old Password',
                     hintText: 'Enter old password',
@@ -88,6 +91,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ),
                   SizedBox(height: 16),
                   CostumFormTextField(
+                    usePassword: true,
                     obscureText: true,
                     labelText: 'New Password',
                     hintText: 'Enter new password',
@@ -95,6 +99,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ),
                   SizedBox(height: 16),
                   CostumFormTextField(
+                    usePassword: true,
                     obscureText: true,
                     labelText: 'Confirm New Password',
                     hintText: 'Confirm new password',
