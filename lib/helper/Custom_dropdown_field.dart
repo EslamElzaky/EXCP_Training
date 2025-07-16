@@ -4,23 +4,29 @@ import 'package:flutter/material.dart';
 class CustomDropdownField extends StatelessWidget {
   CustomDropdownField({
     super.key,
-    required this.items,
+     required this.items,
     required this.labelText,
     this.onChanged,
     this.value,
+    this.onSaved,
+    this.isEnabled = true,
   });
 
   final List<String> items;
+  final bool isEnabled;
   final String? value;
   final String labelText;
   final Function(String?)? onChanged;
+  final Function(String?)? onSaved;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       dropdownColor: kPrimarycolor,
+      onSaved: onSaved,
+      
       validator: (data) {
-        if (data!.isEmpty) {
+        if (data?.isEmpty ?? true) {
           return 'Fiald is requierd';
         }
       },
@@ -31,8 +37,9 @@ class CustomDropdownField extends StatelessWidget {
                 child: Text(item),
               ))
           .toList(),
-      onChanged: onChanged,
+      onChanged:isEnabled? onChanged : null,
       decoration: InputDecoration(
+        
         labelText: labelText,
         hintText: 'select $labelText',
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),

@@ -17,11 +17,11 @@ class TaskeModelAdapter extends TypeAdapter<TaskeModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TaskeModel(
+      isNew: fields[4] as bool,
       typeTask: fields[0] as String,
       title: fields[1] as String,
       content: fields[2] as String,
       date: fields[3] as String,
-      color: fields[4] as int,
     );
   }
 
@@ -38,7 +38,7 @@ class TaskeModelAdapter extends TypeAdapter<TaskeModel> {
       ..writeByte(3)
       ..write(obj.date)
       ..writeByte(4)
-      ..write(obj.color);
+      ..write(obj.isNew);
   }
 
   @override

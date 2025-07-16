@@ -6,21 +6,22 @@ part 'taske_model.g.dart';
 
 class TaskeModel extends HiveObject {
   @HiveField(0)
-  final String typeTask;
+   String typeTask;
   @HiveField(1)
-  final String title;
+   String title;
   @HiveField(2)
-  final String content;
+   String content;
   @HiveField(3)
-  final String date;
+  String date;
   @HiveField(4)
-  final int color;
+   bool isNew;
+ 
 
-  TaskeModel({
+  TaskeModel( {this.isNew = true,
     required this.typeTask,
     required this.title,
     required this.content,
     required this.date,
-    required this.color,
+    
   });
 }

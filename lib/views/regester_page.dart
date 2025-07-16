@@ -3,14 +3,13 @@ import 'package:excp_training/constant.dart';
 import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_snack_bar.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
-import 'package:excp_training/views/home_view.dart';
 import 'package:excp_training/views/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegesterPage extends StatefulWidget {
-  RegesterPage({super.key});
+  const RegesterPage({super.key});
   static String id = 'regesterpage';
 
   @override
@@ -164,7 +163,7 @@ class _RegesterPageState extends State<RegesterPage> {
                       }
                     } catch (e) {
                       showSnackBar(context, 'there was an error');
-                      print(e);
+                   
                     }
                     isLoading = false;
                     setState(() {});
@@ -197,14 +196,7 @@ class _RegesterPageState extends State<RegesterPage> {
   }
 
   Future<void> regeistermethod() async {
-    // if (password != confirmPassword) {
-    //   showSnackBar(context, 'password not match');
-    //   return;
-    // }
-    // if (email == null || password == null) {
-    //   throw Exception('Email and password are required');
-    // }
-
+  
     var auth = FirebaseAuth.instance;
     var firestore = FirebaseFirestore.instance;
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(

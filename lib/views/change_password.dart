@@ -3,7 +3,7 @@ import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'profile_page.dart'; // تأكد إنك مستورد الصفحة دي
+import 'profile_page.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   static String id = 'changePassword';
@@ -49,7 +49,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       if (!mounted) return;
       _showMsg('Password updated successfully');
 
-      // ✅ الانتقال إلى صفحة البروفايل بعد التحديث
+     
       Navigator.pushReplacementNamed(context, ProfilePage.id);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password') {

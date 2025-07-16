@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CostumFormTextField extends StatefulWidget {
   CostumFormTextField({
@@ -14,9 +15,12 @@ class CostumFormTextField extends StatefulWidget {
     this.controller,
     this.isDate = false,
     this.usePassword = false,
+    this.onSaved,  this.initialValue,
   });
+
   final bool usePassword;
   final String? hintText;
+  final String? initialValue;
   final String? labelText;
   final String? prefixText;
   final int maxLines;
@@ -26,14 +30,15 @@ class CostumFormTextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool isDate;
   final bool readOnly;
+  final void Function(String?)? onSaved;
 
   @override
   State<CostumFormTextField> createState() => _CostumFormTextFieldState();
 }
 
 class _CostumFormTextFieldState extends State<CostumFormTextField> {
+ 
   Future<void> _selectDateTime(BuildContext context) async {
-    // 1. اختار التاريخ
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -42,14 +47,12 @@ class _CostumFormTextFieldState extends State<CostumFormTextField> {
     );
 
     if (pickedDate != null) {
-      // 2. بعد اختيار التاريخ، نطلب الوقت
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
       );
 
       if (pickedTime != null) {
-        // 3. نجمع التاريخ والوقت
         final DateTime fullDateTime = DateTime(
           pickedDate.year,
           pickedDate.month,
@@ -58,20 +61,24 @@ class _CostumFormTextFieldState extends State<CostumFormTextField> {
           pickedTime.minute,
         );
 
-        // 4. نحولها لنص بصيغة مناسبة
-        final formatted =
-            "${fullDateTime.year}-${fullDateTime.month.toString().padLeft(2, '0')}-${fullDateTime.day.toString().padLeft(2, '0')} "
-            "${pickedTime.format(context)}";
+        // ✅ استخدم DateFormat هنا للتنسيق
+        final String formatted = DateFormat(
+          'yyyy-MM-dd hh:mm a',
+        ).format(fullDateTime);
 
-        // 5. نعرضها في الحقل
-        if (widget.controller != null) {
-          widget.controller!.text = formatted;
-        }
+        // شيل التركيز من الحقل
+        FocusScope.of(context).unfocus();
 
-        // 6. نمررها عبر onChanged لو موجود
-        if (widget.onChanged != null) {
-          widget.onChanged!(formatted);
-        }
+        // حدث النص بعد فترة بسيطة
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (widget.controller != null) {
+            widget.controller!.text = formatted;
+          }
+
+          if (widget.onChanged != null) {
+            widget.onChanged!(formatted);
+          }
+        });
       }
     }
   }
@@ -79,21 +86,28 @@ class _CostumFormTextFieldState extends State<CostumFormTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: widget.initialValue,
+      onSaved: widget.onSaved,
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       maxLines: widget.maxLines,
       cursorColor: Colors.white,
       obscureText: widget.obscureText,
-      readOnly: widget.readOnly,
+      readOnly: widget.readOnly || widget.isDate,
+      onChanged: widget.onChanged,
       onTap: widget.isDate ? () => _selectDateTime(context) : null,
       validator: (data) {
-        if (data == null || data.isEmpty) {
+        if (data?.isEmpty ?? true) {
+          //لو هوا فاضي يبقي )(صح ونفذ الريترن)
           return 'Field is required';
         }
         return null;
       },
-      onChanged: widget.onChanged,
+
       decoration: InputDecoration(
+        prefixText: widget.prefixText,
+        labelText: widget.labelText,
+        hintText: widget.hintText,
         suffixIcon: widget.usePassword
             ? GestureDetector(
                 onTap: () {
@@ -102,23 +116,24 @@ class _CostumFormTextFieldState extends State<CostumFormTextField> {
                   });
                 },
                 child: Icon(
-                    widget.obscureText
-                        ? Icons.visibility_off
-                        : Icons.remove_red_eye,
-                    color: Colors.white),
+                  widget.obscureText
+                      ? Icons.visibility_off
+                      : Icons.remove_red_eye,
+                  color: Colors.white,
+                ),
               )
-            : SizedBox.shrink(),
-        prefixText: widget.prefixText,
-        labelText: widget.labelText,
-        hintText: widget.hintText,
-        hintStyle: TextStyle(color: Colors.white),
+            : const SizedBox.shrink(),
+
+        hintStyle: const TextStyle(color: Colors.white),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+          borderSide: const BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(16),
         ),
-        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        focusedBorder: OutlineInputBorder(
+        border: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(16),
         ),
       ),

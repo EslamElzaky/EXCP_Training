@@ -1,7 +1,10 @@
 import 'package:excp_training/constant.dart';
 import 'package:excp_training/helper/custom_home_body.dart';
 import 'package:excp_training/helper/show_Model_button_body.dart';
+import 'package:excp_training/views/Categories_page.dart';
+import 'package:excp_training/views/login_page.dart';
 import 'package:excp_training/views/profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
@@ -10,6 +13,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: Drawer(
         backgroundColor: Colors.blueGrey,
         child: ListView(
@@ -19,10 +23,7 @@ class HomeView extends StatelessWidget {
               decoration: BoxDecoration(),
               child: Text(
                 'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
             ListTile(
@@ -33,9 +34,20 @@ class HomeView extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: Icon(Icons.category),
+              title: Text('Categories'),
+              onTap: () {
+                Navigator.pushNamed(context, ManageCategoriesPage.id);
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.logout),
               title: Text('Logout'),
-              onTap: () {},
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                if (!context.mounted) return;
+                Navigator.pushReplacementNamed(context, LoginPage.id);
+              },
             ),
           ],
         ),
@@ -44,16 +56,19 @@ class HomeView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              backgroundColor: kPrimarycolor,
-              isScrollControlled: true,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(29)),
-              context: context,
-              builder: (context) {
-                return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    child: ShowModelButtonBody());
-              });
+            backgroundColor: kPrimarycolor,
+            isScrollControlled: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(29),
+            ),
+            context: context,
+            builder: (context) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: ShowModelButtonBody(),
+              );
+            },
+          );
         },
         child: Icon(Icons.add),
       ),

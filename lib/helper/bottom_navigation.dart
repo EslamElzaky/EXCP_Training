@@ -16,7 +16,7 @@ class BottomNavigationState extends State<BottomNavigation> {
 
   final List<Widget> screens = [
     HomeView(),
-    CategoriesPage(),
+    ManageCategoriesPage(),
     ProfilePage(),
   ];
 
@@ -33,18 +33,12 @@ class BottomNavigationState extends State<BottomNavigation> {
           });
         },
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.category_sharp),
             label: 'categories',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile'),
         ],
       ),
     );

@@ -4,7 +4,6 @@ import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_icons.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
 import 'package:excp_training/views/change_password.dart';
-import 'package:excp_training/views/eidt_profile_page.dart';
 import 'package:excp_training/views/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +33,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> fetchUserData() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
-      final doc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get();
       if (doc.exists) {
-        final data = doc.data();nameController.text =
+        final data = doc.data();
+        nameController.text =
             "${data?['firstName'] ?? ''} ${data?['midName'] ?? ''} ${data?['lastName'] ?? ''}"
                 .trim();
         emailController.text = data?['email'] ?? '';
@@ -51,12 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void navigateToEditProfile() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EidtProfilePage(),
-      ),
-    );
+    final result = await Navigator.pushNamed(context, 'edit_profile_page');
     if (result == true) {
       fetchUserData();
     }
@@ -71,10 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.white.withValues(alpha: 0.2),
         title: Row(
           children: [
-            const Text(
-              'My Profile',
-              style: TextStyle(fontSize: 24),
-            ),
+            const Text('My Profile', style: TextStyle(fontSize: 24)),
             const Spacer(),
             CustomIcons(
               icon: const Icon(Icons.logout),
@@ -83,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (!context.mounted) return;
                 Navigator.pushReplacementNamed(context, LoginPage.id);
               },
-            )
+            ),
           ],
         ),
       ),
@@ -148,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           },
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
