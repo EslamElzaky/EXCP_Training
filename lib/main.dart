@@ -4,9 +4,11 @@ import 'package:excp_training/cubits/ReadTask/read_task_cubit.dart';
 import 'package:excp_training/cubits/task_cubit/task_cubit_cubit.dart';
 import 'package:excp_training/firebase_options.dart';
 import 'package:excp_training/helper/bottom_navigation.dart';
+import 'package:excp_training/helper/hive/hive_keys.dart';
 import 'package:excp_training/models/taske_model.dart';
 import 'package:excp_training/simple_bloc_observer.dart';
 import 'package:excp_training/views/Categories_page.dart';
+import 'package:excp_training/views/add_category_page.dart';
 import 'package:excp_training/views/eidt_profile_page.dart';
 import 'package:excp_training/views/eidt_taske_page.dart';
 import 'package:excp_training/views/home_view.dart';
@@ -29,6 +31,8 @@ void main() async {
   // await Hive.deleteBoxFromDisk(kTaskesBox);
   Hive.registerAdapter(TaskeModelAdapter());
   await Hive.openBox<TaskeModel>(kTaskesBox);
+  await Hive.openBox<List>('categoriesBox');
+   await Hive.openBox(HiveKeys.loginBox);
 
   runApp(MyApp());
 }
@@ -59,6 +63,7 @@ class MyApp extends StatelessWidget {
           'task_view_page': (context) => ViewTaskePage(),
           'categories_page': (context) => ManageCategoriesPage(),
           'EidtTaskePage': (context) => EditTaskPage(),
+          'AddCategoryPage': (context) => AddCategoryPage(),
         },
         initialRoute: 'login_page',
       ),

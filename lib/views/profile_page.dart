@@ -47,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
         cityController.text = data?['city'] ?? '';
       }
     }
+    if (!mounted) return;
     setState(() {
       isLoading = false;
     });
@@ -92,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 50),
                     CostumFormTextField(
                       readOnly: true,
-                      labelText: 'Name',
+
                       prefixText: 'MyName : ',
                       controller: nameController,
                       obscureText: false,
@@ -113,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       hintText: 'Phone',
                       prefixText: 'MyPhone : ',
                       controller: phoneController,
-                      obscureText: false,
+                     
                     ),
                     const SizedBox(height: 20),
                     CostumFormTextField(
@@ -121,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       prefixText: 'MyCountry : ',
                       hintText: 'City',
                       controller: cityController,
-                      obscureText: false,
+                      
                     ),
                     const SizedBox(height: 20),
                     Row(

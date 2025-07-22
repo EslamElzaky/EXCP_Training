@@ -36,7 +36,7 @@ class BottomNavigationState extends State<BottomNavigation> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.category_sharp),
-            label: 'categories',
+            label: 'categories'
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile'),
         ],

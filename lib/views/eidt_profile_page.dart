@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excp_training/constant.dart';
+import 'package:excp_training/helper/Custom_dropdown_field.dart';
 import 'package:excp_training/helper/custom_button.dart';
+import 'package:excp_training/helper/custom_snack_bar.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EidtProfilePage extends StatefulWidget {
   const EidtProfilePage({super.key});
@@ -19,8 +22,16 @@ class _EidtProfilePageState extends State<EidtProfilePage> {
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
-  final cityController = TextEditingController();
 
+  String? selectedCity;
+  List<String> cities = [
+    'Cairo',
+    'Mansoura',
+    'Alexandria',
+    'Giza',
+    'Aswan',
+    'Luxor',
+  ];
   bool isLoading = true;
 
   @override
@@ -32,8 +43,10 @@ class _EidtProfilePageState extends State<EidtProfilePage> {
   Future<void> fetchCurrentUserData() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
-      final doc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get();
       if (doc.exists) {
         final data = doc.data();
         firstNameController.text = data?['firstName'] ?? '';
@@ -41,7 +54,7 @@ class _EidtProfilePageState extends State<EidtProfilePage> {
         lastNameController.text = data?['lastName'] ?? '';
         emailController.text = data?['email'] ?? '';
         phoneController.text = data?['phone'] ?? '';
-        cityController.text = data?['city'] ?? '';
+        selectedCity = data?['city'];
       }
     }
     setState(() {
@@ -58,13 +71,18 @@ class _EidtProfilePageState extends State<EidtProfilePage> {
         'lastName': lastNameController.text.trim(),
         'email': emailController.text.trim(),
         'phone': phoneController.text.trim(),
-        'city': cityController.text.trim(),
+        'city': selectedCity,
       };
 
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
           .update(updatedData);
+
+      if (phoneController.text.length != 11) {
+        showSnackBar(context, 'Phone number must be 11 digits');
+        return;
+      }
 
       if (mounted) Navigator.pop(context, true);
     }
@@ -110,12 +128,30 @@ class _EidtProfilePageState extends State<EidtProfilePage> {
                         keyboardType: TextInputType.phone,
                         hintText: 'Phone',
                         controller: phoneController,
+                        maxLength: 11,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(11),
+                        ],
                       ),
                       const SizedBox(height: 20),
-                      CostumFormTextField(
-                        hintText: 'City',
-                        controller: cityController,
+                      CustomDropdownField(
+                        items: cities,
+                        labelText: 'Select City',
+                        value: selectedCity,
+                        onChanged: (data) {
+                          setState(() {
+                            selectedCity = data;
+                          });
+                        },
+                        validator: (data) {
+                          if (data == null || data.isEmpty) {
+                            return 'Please select a city';
+                          }
+                          return null;
+                        },
                       ),
+
                       const SizedBox(height: 20),
                       CustomButton(
                         size: double.infinity,

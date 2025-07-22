@@ -1,29 +1,29 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 part 'categories_state.dart';
 
 class CategoriesCubit extends Cubit<CategoriesState> {
-  static const String _storageKey = 'categories_list';
-
+  static const String _key = 'categories_list';
+  static const String _boxName = 'categoriesBox';
   CategoriesCubit() : super(CategoriesLoading()) {
     _loadCategories();
   }
+  late Box _box;
 
   List<String> _categories = [];
 
   Future<void> _loadCategories() async {
-    final prefs = await SharedPreferences.getInstance();
-    _categories = prefs.getStringList(_storageKey) ?? [
-      'sports', 'study', 'Games', 'work', 'others'
-    ];
+     _box = Hive.box<List>(_boxName);
+    _categories =
+        (_box.get(_key)?.cast<String>()) ??
+        ['sports', 'study', 'Games', 'work', 'others'];
     emit(CategoriesLoaded(List.from(_categories)));
   }
 
   Future<void> _saveCategories() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(_storageKey, _categories);
+    await _box.put(_key, _categories);
   }
 
   void addCategory(String category) {

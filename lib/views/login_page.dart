@@ -2,6 +2,7 @@ import 'package:excp_training/constant.dart';
 import 'package:excp_training/helper/custom_button.dart';
 import 'package:excp_training/helper/custom_snack_bar.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
+import 'package:excp_training/helper/hive/hive_fun.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -19,6 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> formkey = GlobalKey();
   String? email, password;
   @override
+  void initState() {
+    super.initState();
+      HiveFun.userLogin(context);
+    
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: isLoading,
@@ -30,9 +38,7 @@ class _LoginPageState extends State<LoginPage> {
             key: formkey,
             child: ListView(
               children: [
-                SizedBox(
-                  height: 75,
-                ),
+                SizedBox(height: 75),
                 Container(
                   width: 150,
                   height: 150,
@@ -57,9 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 75,
-                ),
+                SizedBox(height: 75),
                 Row(
                   children: [
                     Text(
@@ -68,18 +72,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 CostumFormTextField(
                   onChanged: (data) {
                     email = data;
                   },
                   hintText: 'Email',
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 CostumFormTextField(
                   usePassword: true,
                   obscureText: true,
@@ -88,9 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   hintText: 'password',
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 CustomButton(
                   size: double.infinity,
                   onTap: () async {
@@ -102,22 +100,31 @@ class _LoginPageState extends State<LoginPage> {
                         if (!context.mounted) return;
 
                         showSnackBar(context, ' Login successful');
+                        await HiveFun.setRememberMe(true);
                         Navigator.pushNamed(context, 'BottomNavigation');
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           showSnackBar(
-                              context, ' No user found with this email.');
+                            context,
+                            ' No user found with this email.',
+                          );
                         } else if (e.code == 'wrong-password') {
                           showSnackBar(context, ' Incorrect password.');
                         } else if (e.code == 'invalid-email') {
                           showSnackBar(
-                              context, 'The email address is invalid.');
+                            context,
+                            'The email address is invalid.',
+                          );
                         } else if (e.code == 'too-many-requests') {
-                          showSnackBar(context,
-                              ' Too many failed attempts. Try again later.');
+                          showSnackBar(
+                            context,
+                            ' Too many failed attempts. Try again later.',
+                          );
                         } else {
                           showSnackBar(
-                              context, ' An error occurred: ${e.message}');
+                            context,
+                            ' An error occurred: ${e.message}',
+                          );
                         }
                       }
 
@@ -127,9 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   text: 'LOGIN',
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                const SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -145,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                         '  Register',
                         style: TextStyle(color: Color(0xffC7EDE6)),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],

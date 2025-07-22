@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class AddCategoryPage extends StatefulWidget {
   const AddCategoryPage({super.key});
-
+  static String id = 'AddCategoryPage';
   @override
   State<AddCategoryPage> createState() => _AddCategoryPageState();
 }
@@ -16,7 +16,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   void _save() {
     final text = _controller.text.trim();
     if (text.isNotEmpty) {
-      Navigator.pop(context, text); 
+      Navigator.pop(context, text);
     }
   }
 

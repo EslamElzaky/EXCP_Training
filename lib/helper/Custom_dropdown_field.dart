@@ -10,6 +10,7 @@ class CustomDropdownField extends StatelessWidget {
     this.value,
     this.onSaved,
     this.isEnabled = true,
+    this.validator,
   });
 
   final List<String> items;
@@ -18,17 +19,23 @@ class CustomDropdownField extends StatelessWidget {
   final String labelText;
   final Function(String?)? onChanged;
   final Function(String?)? onSaved;
+   final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       dropdownColor: kPrimarycolor,
       onSaved: onSaved,
-      
-      validator: (data) {
+       validator: (data) {
         if (data?.isEmpty ?? true) {
-          return 'Fiald is requierd';
+          //لو هوا فاضي يبقي )(صح ونفذ الريترن)
+          return 'Field is required';
+        } // لو فيه validator جاي من برة، نفذه بعد التحقق من الفاضية
+        if (validator != null) {
+          return validator!(data);
         }
+
+        return null;
       },
       value: value,
       items: items

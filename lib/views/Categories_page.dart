@@ -67,9 +67,9 @@ class ManageCategoriesPage extends StatelessWidget {
               size: double.infinity,
               text: 'Add Category',
               onTap: () async {
-                final newCategory = await Navigator.push<String>(
+                final newCategory = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => AddCategoryPage()),
+                  MaterialPageRoute(builder: (context) => AddCategoryPage()),
                 );
 
                 if (newCategory != null && newCategory.trim().isNotEmpty) {

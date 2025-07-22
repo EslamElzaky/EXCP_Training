@@ -1,5 +1,6 @@
 import 'package:excp_training/constant.dart';
 import 'package:excp_training/helper/custom_home_body.dart';
+import 'package:excp_training/helper/hive/hive_fun.dart';
 import 'package:excp_training/helper/show_Model_button_body.dart';
 import 'package:excp_training/views/Categories_page.dart';
 import 'package:excp_training/views/login_page.dart';
@@ -46,6 +47,7 @@ class HomeView extends StatelessWidget {
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
+                await HiveFun.setRememberMe(false);
                 Navigator.pushReplacementNamed(context, LoginPage.id);
               },
             ),

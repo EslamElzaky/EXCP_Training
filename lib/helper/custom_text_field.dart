@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class CostumFormTextField extends StatefulWidget {
@@ -15,15 +16,21 @@ class CostumFormTextField extends StatefulWidget {
     this.controller,
     this.isDate = false,
     this.usePassword = false,
-    this.onSaved,  this.initialValue,
+    this.onSaved,
+    this.initialValue,
+    this.validator,
+    this.maxLength,
+    this.inputFormatters
   });
 
   final bool usePassword;
   final String? hintText;
   final String? initialValue;
+  final int maxLines;
+  final int? maxLength;
   final String? labelText;
   final String? prefixText;
-  final int maxLines;
+
   final TextInputType? keyboardType;
   bool obscureText;
   final Function(String)? onChanged;
@@ -31,13 +38,14 @@ class CostumFormTextField extends StatefulWidget {
   final bool isDate;
   final bool readOnly;
   final void Function(String?)? onSaved;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   State<CostumFormTextField> createState() => _CostumFormTextFieldState();
 }
 
 class _CostumFormTextFieldState extends State<CostumFormTextField> {
- 
   Future<void> _selectDateTime(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -86,6 +94,8 @@ class _CostumFormTextFieldState extends State<CostumFormTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+       inputFormatters:widget.inputFormatters,
+      maxLength: widget.maxLength ,
       initialValue: widget.initialValue,
       onSaved: widget.onSaved,
       controller: widget.controller,
@@ -95,12 +105,18 @@ class _CostumFormTextFieldState extends State<CostumFormTextField> {
       obscureText: widget.obscureText,
       readOnly: widget.readOnly || widget.isDate,
       onChanged: widget.onChanged,
-      onTap: widget.isDate ? () => _selectDateTime(context) : null,
+      onTap: (widget.isDate && !widget.readOnly)
+          ? () => _selectDateTime(context)
+          : null,
       validator: (data) {
         if (data?.isEmpty ?? true) {
           //لو هوا فاضي يبقي )(صح ونفذ الريترن)
           return 'Field is required';
+        } // لو فيه validator جاي من برة، نفذه بعد التحقق من الفاضية
+        if (widget.validator != null) {
+          return widget.validator!(data);
         }
+
         return null;
       },
 

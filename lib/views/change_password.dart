@@ -1,5 +1,6 @@
 import 'package:excp_training/constant.dart';
 import 'package:excp_training/helper/custom_button.dart';
+import 'package:excp_training/helper/custom_snack_bar.dart';
 import 'package:excp_training/helper/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +18,21 @@ class ChangePasswordPage extends StatefulWidget {
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
   String? oldPassword, newPassword, confirmPassword;
   bool isLoading = false;
+  GlobalKey<FormState> formkey = GlobalKey();
 
   Future<void> changePassword() async {
+    if (!formkey.currentState!.validate()) {
+      // الفورم فيه أخطاء
+      return;
+    }
     if (oldPassword == null || newPassword == null || confirmPassword == null) {
-      _showMsg('Please fill all fields');
+      showSnackBar(context, 'Please fill all fields');
       return;
     }
 
     if (newPassword != confirmPassword) {
-      _showMsg('Passwords do not match');
+      showSnackBar(context, 'Passwords do not match');
+
       return;
     }
 
@@ -35,37 +42,35 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     final email = user?.email;
 
     if (email == null) {
-      _showMsg('No user logged in');
+      showSnackBar(context, 'No user logged in');
+
       setState(() => isLoading = false);
       return;
     }
 
     try {
-      final credential =
-          EmailAuthProvider.credential(email: email, password: oldPassword!);
+      final credential = EmailAuthProvider.credential(
+        email: email,
+        password: oldPassword!,
+      );
       await user!.reauthenticateWithCredential(credential);
       await user.updatePassword(newPassword!);
 
       if (!mounted) return;
-      _showMsg('Password updated successfully');
+      showSnackBar(context, 'Password updated successfully');
 
-     
       Navigator.pushReplacementNamed(context, ProfilePage.id);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password') {
-        _showMsg('Old password is incorrect');
+        showSnackBar(context, 'Old password is incorrect');
       } else {
-        _showMsg('Error: ${e.message}');
+        showSnackBar(context, 'Error: ${e.message}');
       }
     } catch (e) {
-      _showMsg('Something went wrong');
+      showSnackBar(context, 'Something went wrong');
     }
 
     setState(() => isLoading = false);
-  }
-
-  void _showMsg(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -78,42 +83,51 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  CostumFormTextField(
-                    usePassword: true,
-                    obscureText: true,
-                    labelText: 'Old Password',
-                    hintText: 'Enter old password',
-                    onChanged: (value) => oldPassword = value,
-                  ),
-                  SizedBox(height: 16),
-                  CostumFormTextField(
-                    usePassword: true,
-                    obscureText: true,
-                    labelText: 'New Password',
-                    hintText: 'Enter new password',
-                    onChanged: (value) => newPassword = value,
-                  ),
-                  SizedBox(height: 16),
-                  CostumFormTextField(
-                    usePassword: true,
-                    obscureText: true,
-                    labelText: 'Confirm New Password',
-                    hintText: 'Confirm new password',
-                    onChanged: (value) => confirmPassword = value,
-                  ),
-                  SizedBox(height: 32),
-                  CustomButton(
-                    size: double.infinity,
-                    text: 'change Password',
-                    onTap: () {
-                      changePassword();
-                    },
-                  )
-                ],
+          : Form(
+              key: formkey,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    CostumFormTextField(
+                      onChanged: (data) {
+                        oldPassword = data;
+                      },
+                      usePassword: true,
+                      obscureText: true,
+                      labelText: 'Old Password',
+                      hintText: 'Enter old password',
+                    ),
+                    SizedBox(height: 16),
+                    CostumFormTextField(
+                      onChanged: (data) {
+                        newPassword = data;
+                      },
+                      usePassword: true,
+                      obscureText: true,
+                      labelText: 'New Password',
+                      hintText: 'Enter new password',
+                    ),
+                    SizedBox(height: 16),
+                    CostumFormTextField(
+                      onChanged: (data) {
+                        confirmPassword = data;
+                      },
+                      usePassword: true,
+                      obscureText: true,
+                      labelText: 'Confirm New Password',
+                      hintText: 'Confirm new password',
+                    ),
+                    SizedBox(height: 32),
+                    CustomButton(
+                      size: double.infinity,
+                      text: 'change Password',
+                      onTap: () {
+                        changePassword();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
     );
