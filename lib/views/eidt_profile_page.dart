@@ -122,6 +122,20 @@ class _EidtProfilePageState extends State<EidtProfilePage> {
                         keyboardType: TextInputType.emailAddress,
                         hintText: 'Email',
                         controller: emailController,
+                        validator: (data) {
+                          if (data == null || data.trim().isEmpty) {
+                            return 'Email is required';
+                          }
+
+                          final emailRegex = RegExp(
+                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                          );
+                          if (!emailRegex.hasMatch(data.trim())) {
+                            return 'Please enter a valid email address';
+                          }
+
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20),
                       CostumFormTextField(
